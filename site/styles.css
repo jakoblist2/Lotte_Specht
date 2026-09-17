@@ -1623,11 +1623,8 @@ html.intro-playing body,
 .intro-playing .intro-skip:hover,
 .intro-playing .intro-skip:focus-visible { background: var(--red); color: white; }
 
-/* The scroll film fills the stage after the intro has finished. */
-.home-body .film-window img {
-  object-fit: cover;
-  object-position: center;
-}
+/* The scroll film fills the stage after the intro has finished.
+   Keep the base object-position (center 35%) so wide/short viewports don't crop the subject's head off the top. */
 .home-body .film-window {
   background: #0b0b0b;
   border: 0;

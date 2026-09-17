@@ -235,7 +235,12 @@
   }
   async function collection() {
     const path='/api/calendar';let items=await api(path);const form=$('collection-form');
-    function draw() {
+    const hasMonthView=!!$('month-view');
+    const monthCursor=new Date();monthCursor.setDate(1);monthCursor.setHours(0,0,0,0);
+    function editItem(item){if(dirty&&!confirm('Ungespeicherte Änderungen verwerfen?'))return;for(const key of ['id','title','date','notes','url'])form.elements[key].value=item[key]||'';dirty=false;form.elements.title.focus();}
+    function removeItem(item){return async()=>{if(!confirm('Eintrag entfernen?'))return;const updated=items.filter(x=>x.id!==item.id);await api(path,{items:updated});items=updated;draw();status('Eintrag entfernt.');};}
+    function draw() { drawList(); if(hasMonthView) drawMonth(); }
+    function drawList() {
       const term=$('collection-search').value.toLocaleLowerCase('de');$('collection-list').replaceChildren();
       const visible=items.filter(item=>(item.title+' '+item.notes).toLocaleLowerCase('de').includes(term)).sort((a,b)=>a.date.localeCompare(b.date));
       if(!visible.length)$('collection-list').append(el('p',items.length?'Keine passenden Einträge.':'Noch keine Einträge. Lege links den ersten an.','empty-state'));
@@ -245,18 +250,43 @@
         card.append(time,el('h2',item.title),el('p',item.notes));
         if(item.url){if(/^https?:\/\//.test(item.url)){const link=el('a','Material / Link öffnen ↗');link.href=item.url;link.target='_blank';link.rel='noopener';card.append(link);}else card.append(el('p',item.url));}
         const actions=el('div',undefined,'dialog-actions');
-        actions.append(button('Bearbeiten',()=>{if(dirty&&!confirm('Ungespeicherte Änderungen verwerfen?'))return;for(const key of ['id','title','date','notes','url'])form.elements[key].value=item[key]||'';dirty=false;form.elements.title.focus();}),button('Entfernen',async()=>{
-          if(!confirm('Eintrag entfernen?'))return;
-          const updated=items.filter(x=>x.id!==item.id);await api(path,{items:updated});items=updated;draw();status('Eintrag entfernt.');
-        },'text-button'));card.append(actions);$('collection-list').append(card);
+        actions.append(button('Bearbeiten',()=>editItem(item)),button('Entfernen',removeItem(item),'text-button'));card.append(actions);$('collection-list').append(card);
       });
+    }
+    function drawMonth() {
+      const grid=$('month-grid');grid.replaceChildren();
+      $('month-label').textContent=monthCursor.toLocaleDateString('de-DE',{month:'long',year:'numeric'});
+      const byDay=new Map();
+      items.forEach(item=>{if(!item.date)return;const day=item.date.slice(0,10);if(!byDay.has(day))byDay.set(day,[]);byDay.get(day).push(item);});
+      ['Mo','Di','Mi','Do','Fr','Sa','So'].forEach(label=>grid.append(el('div',label,'calendar-weekday')));
+      const startOffset=(new Date(monthCursor.getFullYear(),monthCursor.getMonth(),1).getDay()+6)%7;
+      const daysInMonth=new Date(monthCursor.getFullYear(),monthCursor.getMonth()+1,0).getDate();
+      for(let i=0;i<startOffset;i++)grid.append(el('div',undefined,'calendar-cell calendar-cell-empty'));
+      const todayKey=new Date().toISOString().slice(0,10);
+      for(let day=1;day<=daysInMonth;day++){
+        const key=new Date(monthCursor.getFullYear(),monthCursor.getMonth(),day).toISOString().slice(0,10);
+        const cell=el('div',undefined,'calendar-cell'+(key===todayKey?' calendar-cell-today':''));
+        cell.append(el('span',String(day),'calendar-daynum'));
+        (byDay.get(key)||[]).sort((a,b)=>a.date.localeCompare(b.date)).forEach(item=>cell.append(button(item.title,()=>editItem(item),'calendar-entry')));
+        grid.append(cell);
+      }
+    }
+    if(hasMonthView){
+      document.querySelectorAll('.view-toggle-button').forEach(toggle=>toggle.addEventListener('click',()=>{
+        const view=toggle.dataset.view;
+        document.querySelectorAll('.view-toggle-button').forEach(b=>b.setAttribute('aria-pressed',String(b===toggle)));
+        $('list-view').hidden=view!=='list';$('month-view').hidden=view!=='month';
+        if(view==='month')drawMonth();
+      }));
+      $('month-prev').addEventListener('click',()=>{monthCursor.setMonth(monthCursor.getMonth()-1);drawMonth();});
+      $('month-next').addEventListener('click',()=>{monthCursor.setMonth(monthCursor.getMonth()+1);drawMonth();});
     }
     form.addEventListener('input',()=>{dirty=true;});form.addEventListener('reset',()=>{dirty=false;});
     form.addEventListener('submit',action(async()=>{
       const item=Object.fromEntries(new FormData(form));item.id=item.id||crypto.randomUUID();
       const updated=items.filter(x=>x.id!==item.id).concat(item);await api(path,{items:updated});items=updated;form.reset();dirty=false;draw();status('Eintrag gespeichert.');
     }));
-    $('collection-search').addEventListener('input',draw);draw();
+    $('collection-search').addEventListener('input',drawList);draw();
   }
   action(async()=>{
     if(location.protocol==='file:')throw new Error('Für den Login und das Speichern bitte den Redaktionsserver starten: python3 server/cms.py. Danach http://127.0.0.1:8766/login.html öffnen.');
