@@ -222,12 +222,11 @@ function updateIntroScale(now) {
   const naturalWidth = introFrame.naturalWidth;
   const naturalHeight = introFrame.naturalHeight;
   if (naturalWidth && naturalHeight && width && height) {
+    // Fit (not fill) the frame so a wide/short viewport shows white margins instead of cropping the top of the photo.
     const fit = Math.min(width / naturalWidth, height / naturalHeight);
-    const fill = Math.max(width / naturalWidth, height / naturalHeight);
-    const initialScale = 0.2 * fit / fill;
-    introFrame.style.width = `${naturalWidth * fill}px`;
-    introFrame.style.height = `${naturalHeight * fill}px`;
-    document.documentElement.style.setProperty("--intro-scale", String(initialScale + (1 - initialScale) * eased));
+    introFrame.style.width = `${naturalWidth * fit}px`;
+    introFrame.style.height = `${naturalHeight * fit}px`;
+    document.documentElement.style.setProperty("--intro-scale", String(0.2 + 0.8 * eased));
   }
   const frameIndex = clamp(Math.floor(elapsed * introFps), 0, introFrameCount - 1);
   const frame = loadIntroFrame(frameIndex);
