@@ -284,26 +284,7 @@ function startIntro() {
   else first.addEventListener("load", begin, { once: true });
 }
 
-const presentationStart = document.querySelector("#presentation-start");
-const presentationButton = document.querySelector("#presentation-start-button");
-const presentationContent = [...document.querySelectorAll("body > :not(.presentation-start):not(script)")];
-if (document.documentElement.classList.contains("presentation-ready")) {
-  presentationStart.hidden = false;
-  presentationContent.forEach((element) => { element.inert = true; });
-  presentationButton.focus({ preventScroll: true });
-  presentationButton.addEventListener("click", () => {
-    presentationButton.disabled = true;
-    // Set the intro state before removing the white screen to avoid a film flash.
-    startIntro();
-    presentationContent.forEach((element) => { element.inert = false; });
-    presentationStart.hidden = true;
-    document.documentElement.classList.remove("presentation-ready");
-    if (introPlaying) introSkip.focus({ preventScroll: true });
-    else document.querySelector(".site-menu summary").focus({ preventScroll: true });
-  }, { once: true });
-} else {
-  startIntro();
-}
+startIntro();
 
 copyBlocks.forEach(prepareTypewriter);
 for (let index = 0; index < 32; index += 1) loadFrame(index);

@@ -1637,31 +1637,7 @@ html.intro-playing body,
 .intro-playing .film-window { background: white; }
 .home-body .film-window::before { display: none; }
 
-/* Presentation entry: a clean white screen, followed by the film and navigation. */
-.presentation-start { display: none; }
-.presentation-ready, .presentation-ready body { overflow: hidden; background: white; }
-.presentation-ready .presentation-start {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: grid;
-  place-items: center;
-  background: white;
-}
-.presentation-start button {
-  padding: 0.9rem 2.8rem;
-  border: 1px solid var(--red);
-  border-radius: 2px;
-  background: white;
-  color: var(--red);
-  font: inherit;
-  font-size: 1.125rem;
-  cursor: pointer;
-  transition: background 200ms ease, color 200ms ease;
-}
-.presentation-start button:hover { background: var(--red); color: white; }
-.presentation-start button:focus-visible { outline: 2px solid var(--red); outline-offset: 6px; }
-.presentation-ready .site-header,
+/* Presentation entry: the film plays first, then the navigation fades in. */
 .intro-playing:not(.presentation-started) .site-header { visibility: hidden; }
 .presentation-started .home-body .site-header > * {
   animation: presentation-menu-in 1.2s ease both;
@@ -1674,7 +1650,6 @@ html.intro-playing body,
 }
 @media (prefers-reduced-motion: reduce) {
   .presentation-started .home-body .site-header > * { animation: none; }
-  .presentation-start button { transition: none; }
 }
 
 /* Original red wordmark, including e.V., without the illustration. */
