@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Wann laufen Frauen- und Männer-Bundesliga? Spielplan und Orte in Frankfurt zum gemeinsamen Zuschauen." />
-    <title>Wo läuft's? — Lotte Specht e.V.</title><link rel="icon" href="assets/logo.png" /><link rel="stylesheet" href="styles.css?v=studio2" />
+    <title>Wo läuft's? — Lotte Specht e.V.</title><link rel="icon" href="assets/logo.png" /><link rel="stylesheet" href="styles.css?v=studio3" />
     <script src="menu.js?v=menu7" defer></script>
-    <script src="wo-laeuft.js?v=1" defer></script>
+    <script src="wo-laeuft.js?v=3" defer></script>
   </head>
   <body class="page-body">
     <a class="skip-link" href="#inhalt">Zum Inhalt</a>
@@ -19,6 +19,18 @@
           <button type="button" class="filter-chip" data-filter="alle" aria-pressed="true">Alle</button>
           <button type="button" class="filter-chip" data-filter="frauen" aria-pressed="false">Frauen-Bundesliga</button>
           <button type="button" class="filter-chip" data-filter="maenner" aria-pressed="false">Männer-Bundesliga</button>
+          <div class="spielplan-view-toggle" role="group" aria-label="Ansicht wählen">
+            <button type="button" class="filter-chip" data-view="list" aria-pressed="true">Liste</button>
+            <button type="button" class="filter-chip" data-view="calendar" aria-pressed="false">Kalender</button>
+          </div>
+        </div>
+        <div id="match-calendar" class="match-calendar" hidden>
+          <div class="match-calendar-header">
+            <button type="button" id="match-month-prev" class="calendar-nav" aria-label="Vorheriger Monat">‹</button>
+            <h3 id="match-month-label"></h3>
+            <button type="button" id="match-month-next" class="calendar-nav" aria-label="Nächster Monat">›</button>
+          </div>
+          <div id="match-day-strip" class="match-day-strip" role="listbox" aria-label="Tag wählen, zum Scrollen wischen"></div>
         </div>
         <div id="matches-list" class="spielplan-list"><div class="empty-state">Spiele werden geladen …</div></div>
       </div></section>

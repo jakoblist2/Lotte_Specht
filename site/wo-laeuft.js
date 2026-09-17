@@ -5,18 +5,34 @@
 
   function renderMatches(items) {
     const list = $('matches-list');
+    const calendarRoot = $('match-calendar');
+    const dayStrip = $('match-day-strip');
+    const monthLabel = $('match-month-label');
     let activeFilter = 'alle';
-    function draw() {
+    let activeView = 'list';
+    let activeDay = null;
+    const now = Date.now();
+    const upcoming = items.filter(i => i.date && new Date(i.date).getTime() > now).sort((a, b) => a.date.localeCompare(b.date));
+    const startRef = upcoming.length ? new Date(upcoming[0].date) : new Date();
+    let monthCursor = new Date(startRef.getFullYear(), startRef.getMonth(), 1);
+
+    const dateKey = (y, m, d) => y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+    const itemDay = (item) => item.date ? item.date.slice(0, 10) : null;
+    const formatMatchDate = (date) => date.includes('T')
+      ? new Date(date).toLocaleString('de-DE', {dateStyle: 'medium', timeStyle: 'short'})
+      : new Date(date + 'T00:00').toLocaleDateString('de-DE', {dateStyle: 'medium'}) + ', Uhrzeit folgt';
+
+    function drawList() {
       list.replaceChildren();
-      const now = Date.now();
       const visible = items
         .filter(item => activeFilter === 'alle' || item.gender === activeFilter)
-        .filter(item => !item.date || new Date(item.date).getTime() > now - 3 * 60 * 60 * 1000)
+        .filter(item => activeView === 'calendar' || !item.date || new Date(item.date).getTime() > now - 3 * 60 * 60 * 1000)
+        .filter(item => !activeDay || itemDay(item) === activeDay)
         .sort((a, b) => (a.date || '').localeCompare(b.date || ''));
-      if (!visible.length) { list.append(el('div', 'Aktuell sind keine Spiele eingetragen.', 'empty-state')); return; }
+      if (!visible.length) { list.append(el('div', activeDay ? 'An diesem Tag ist kein Spiel eingetragen.' : 'Aktuell sind keine Spiele eingetragen.', 'empty-state')); return; }
       visible.forEach(item => {
         const card = el('article', undefined, 'match-card');
-        card.append(el('time', item.date ? new Date(item.date).toLocaleString('de-DE', {dateStyle: 'medium', timeStyle: 'short'}) : 'Termin folgt'));
+        card.append(el('time', item.date ? formatMatchDate(item.date) : 'Termin folgt'));
         const league = el('span', item.gender === 'frauen' ? 'Frauen-Bundesliga' : 'Männer-Bundesliga', 'match-league');
         card.append(league);
         card.append(el('h3', item.team_home + ' – ' + item.team_away));
@@ -26,14 +42,66 @@
         list.append(card);
       });
     }
-    document.querySelectorAll('.filter-chip').forEach(chip => {
+
+    function drawDayStrip() {
+      dayStrip.replaceChildren();
+      monthLabel.textContent = monthCursor.toLocaleDateString('de-DE', {month: 'long', year: 'numeric'});
+      const byDay = new Map();
+      items.forEach(item => {
+        if (activeFilter !== 'alle' && item.gender !== activeFilter) return;
+        const day = itemDay(item);
+        if (!day) return;
+        if (!byDay.has(day)) byDay.set(day, []);
+        byDay.get(day).push(item);
+      });
+      const daysInMonth = new Date(monthCursor.getFullYear(), monthCursor.getMonth() + 1, 0).getDate();
+      const today = new Date();
+      const todayKey = dateKey(today.getFullYear(), today.getMonth(), today.getDate());
+      let activeCell = null;
+      for (let day = 1; day <= daysInMonth; day += 1) {
+        const key = dateKey(monthCursor.getFullYear(), monthCursor.getMonth(), day);
+        const hasMatch = byDay.has(key);
+        const cellDate = new Date(monthCursor.getFullYear(), monthCursor.getMonth(), day);
+        const cell = el('button', undefined, 'match-day' + (key === todayKey ? ' match-day-today' : '') + (key === activeDay ? ' match-day-active' : '') + (hasMatch ? ' match-day-has-match' : ''));
+        cell.type = 'button';
+        cell.setAttribute('aria-pressed', String(key === activeDay));
+        cell.append(el('span', cellDate.toLocaleDateString('de-DE', {weekday: 'short'}), 'match-day-weekday'));
+        cell.append(el('span', String(day), 'match-day-num'));
+        if (hasMatch) cell.append(el('span', '', 'match-day-dot'));
+        cell.addEventListener('click', () => {
+          activeDay = activeDay === key ? null : key;
+          drawDayStrip();
+          drawList();
+        });
+        if (key === activeDay) activeCell = cell;
+        dayStrip.append(cell);
+      }
+      if (activeCell) activeCell.scrollIntoView({behavior: 'smooth', inline: 'center', block: 'nearest'});
+    }
+
+    function setView(view) {
+      activeView = view;
+      document.querySelectorAll('.spielplan-view-toggle .filter-chip').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === view)));
+      calendarRoot.hidden = view !== 'calendar';
+      if (view !== 'calendar') activeDay = null;
+      drawDayStrip();
+      drawList();
+    }
+
+    document.querySelectorAll('.spielplan-filter > .filter-chip[data-filter]').forEach(chip => {
       chip.addEventListener('click', () => {
         activeFilter = chip.dataset.filter;
-        document.querySelectorAll('.filter-chip').forEach(c => c.setAttribute('aria-pressed', String(c === chip)));
-        draw();
+        document.querySelectorAll('.spielplan-filter > .filter-chip[data-filter]').forEach(c => c.setAttribute('aria-pressed', String(c === chip)));
+        drawDayStrip();
+        drawList();
       });
     });
-    draw();
+    document.querySelectorAll('.spielplan-view-toggle .filter-chip').forEach(btn => btn.addEventListener('click', () => setView(btn.dataset.view)));
+    $('match-month-prev').addEventListener('click', () => { monthCursor.setMonth(monthCursor.getMonth() - 1); drawDayStrip(); });
+    $('match-month-next').addEventListener('click', () => { monthCursor.setMonth(monthCursor.getMonth() + 1); drawDayStrip(); });
+
+    drawDayStrip();
+    drawList();
   }
 
   function renderVenueList(venues) {

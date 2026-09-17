@@ -1699,6 +1699,40 @@ html.intro-playing body,
 
 .filter-chip:hover { border-color: var(--red); }
 
+.spielplan-view-toggle { display: flex; gap: 12px; margin-left: auto; }
+
+.match-calendar { margin: 0 0 32px; }
+
+.match-calendar-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+
+.match-calendar-header h3 { margin: 0; font-size: 1.15rem; letter-spacing: -0.02em; text-transform: capitalize; }
+
+.calendar-nav { border: 1px solid #111; background: transparent; color: #111; width: 40px; height: 40px; font-size: 1.2rem; line-height: 1; cursor: pointer; padding: 0; }
+
+.calendar-nav:hover { border-color: var(--red); color: var(--red); }
+
+.match-day-strip { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x proximity; padding-bottom: 10px; -webkit-overflow-scrolling: touch; }
+
+.match-day { scroll-snap-align: start; flex: 0 0 auto; width: 56px; display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 4px 12px; border: 1px solid #d8d7d2; background: white; cursor: pointer; }
+
+.match-day-weekday { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #656565; }
+
+.match-day-num { font-size: 1.1rem; font-weight: 800; }
+
+.match-day-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
+
+.match-day-today { border-color: #111; }
+
+.match-day-has-match:hover { border-color: var(--red); }
+
+.match-day-active { background: #111; border-color: #111; }
+
+.match-day-active .match-day-weekday { color: #ccc; }
+
+.match-day-active .match-day-num { color: white; }
+
+.match-day-active .match-day-dot { background: white; }
+
 .spielplan-list, .venue-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 8px; }
 
 .match-card, .venue-card { border: 1px solid #111; padding: 24px; }
