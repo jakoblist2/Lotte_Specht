@@ -1,0 +1,9 @@
+{
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler pages dev dist --d1=DB --r2=UPLOADS --compatibility-date=2026-09-17"
+  },
+  "devDependencies": {
+    "wrangler": "^4.134.0"
+  }
+}

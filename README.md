@@ -45,19 +45,35 @@ Den Ordner `dist` mit einem lokalen Webserver öffnen. Der aktuelle Arbeitsstand
 
 Die Startseite steuert den Scrollfilm als JPG-Sequenz über die Scrollposition, das Intro davor läuft als eigene, zeitbasierte JPG-Sequenz (keine Videodatei mehr – kein Autoplay-Risiko, kleinere Dateigröße). Die Navigation bleibt fixiert; Textkapitel werden passend zu den Filmszenen eingeblendet.
 
-## Kunden-Preview (Cloudflare Pages via GitHub)
+## Kunden-Preview auf Cloudflare (GitHub-verbunden, inkl. Login-Bereich)
 
-Cloudflare Pages hostet nur statische Dateien, keinen Python-Server. Der Login-Bereich (Editor, Kalender, Spielplan-/Presse-Pflege) läuft deshalb weiterhin nur lokal über `server/cms.py`. Für die Preview wird der aktuell veröffentlichte Stand der öffentlichen Seiten als reine Static-Site exportiert.
+Der komplette Login-Bereich (Editor, Kalender, Spielplan-/Presse-Pflege) läuft jetzt auch online — als Cloudflare-Pages-Projekt mit **Functions** (JavaScript-Port von `server/cms.py`, im `functions/`-Ordner) und einer **D1**-Datenbank statt SQLite. Vorbild und Muster: das bestehende Setup von moviadesign.studio (`functions/_lib`, `functions/api/*.js`). Weiterhin ohne echtes Login (offener Modus wie lokal) — das kommt als separater Schritt, sobald alles final ist.
 
-**Workflow:**
+**Lokal testen, bevor irgendwas online geht** (Wrangler emuliert D1 und R2 lokal, keine Cloudflare-Ressourcen nötig):
 
-1. Inhalte wie gewohnt lokal über den Login-Bereich bearbeiten und veröffentlichen.
-2. Export aktualisieren: `python3 server/export_static.py` — schreibt den aktuellen veröffentlichten Stand nach `site/` (git-versioniert, sicher jederzeit neu zu erzeugen).
-3. `git add -A && git commit -m "Update" && git push` — Cloudflare Pages ist mit dem GitHub-Repo verbunden und deployt automatisch bei jedem Push. Build-Verzeichnis in Cloudflare: `site/`, kein Build-Command nötig (reines Static Hosting).
+```
+npm install
+npm run dev
+```
 
-`site/` enthält nur die acht öffentlichen Seiten (kein Login, keine internen Verwaltungsseiten) plus statische Kopien von `/api/matches`, `/api/venues`, `/api/presskit`, damit „Wo läuft's?“ und „Presse“ auch ganz ohne Server funktionieren.
+Öffnet unter `http://localhost:8788` — Editor, Kalender, Spielplan, Presse-Material, alles inklusive.
 
-**Livegang später:** Sobald ein finaler Stand steht, in Cloudflare Pages eine eigene Domain auf dasselbe Projekt legen. Der Login-Bereich bräuchte dafür einen eigenen, dauerhaft laufenden Server (z. B. Fly.io/Render) plus ein echtes Login — das ist ein separater, späterer Schritt.
+**Workflow für laufende Änderungen:**
+
+1. Inhalte lokal über den Login-Bereich bearbeiten (entweder `python3 server/cms.py` weiterhin für den reinen Redaktionsbetrieb, oder `npm run dev` gegen die Cloudflare-Variante).
+2. Bei neuen Dateien direkt in `dist/assets/`: `python3 server/generate_media_manifest.py` neu laufen lassen (Cloudflare kann Ordner nicht live auflisten, deshalb ein Datei-Verzeichnis).
+3. `git add -A && git commit -m "..." && git push` — Cloudflare Pages deployt automatisch bei jedem Push.
+
+**Einmalig einzurichten (braucht deinen Cloudflare-Login):**
+
+1. D1-Datenbank anlegen, z. B. `npx wrangler d1 create lotte-specht-db`
+2. R2-Bucket anlegen: `npx wrangler r2 bucket create lotte-specht-uploads`
+3. Im Cloudflare-Pages-Projekt (Settings → Functions): D1-Binding `DB` → die neue Datenbank; R2-Binding `UPLOADS` → den neuen Bucket
+4. Build-Einstellungen auf Build-Verzeichnis `dist` umstellen (statt `site`)
+
+**Ohne echte Bilder-Größenanpassung:** Anders als lokal (Pillow: verkleinert, komprimiert zu WebP) speichert der Cloudflare-Upload Bilder unverändert — es gibt kein Pillow-Äquivalent in Workers. Für die Preview unkritisch, für den Livegang ggf. nachrüsten.
+
+**Alte, reine Static-Variante** (kein Login online, nur Anschauen): `python3 server/export_static.py` exportiert die acht öffentlichen Seiten ohne Server nach `site/` — falls das für einen bestimmten Zweck mal wieder gebraucht wird, Build-Verzeichnis in Cloudflare entsprechend auf `site` zurückstellen.
 
 ## Inhaltlicher Stand
 
