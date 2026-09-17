@@ -7,7 +7,7 @@ export const DEFAULT_PRESSKIT = [
   { id: "illu-schiesst", category: "logo", title: "Illustration „Lotte schießt“", src: "assets/presskit/lotte-schiesst-illustration.svg", credit: "Illustration: Lotte Specht e.V." },
   { id: "illu-schiesst-ohne-typo", category: "logo", title: "Illustration „Lotte schießt“ (ohne Schriftzug)", src: "assets/presskit/lotte-schiesst-ohne-typo.svg", credit: "Illustration: Lotte Specht e.V." },
   { id: "illu-original", category: "logo", title: "Original-Zeichnung „Schuss“", src: "assets/presskit/lotte-originalzeichnung-schuss.svg", credit: "Illustration: Lotte Specht e.V." },
-  { id: "foto-team", category: "foto", title: "Teamfoto (Platzhalter)", src: "assets/10-city-team.jpg", credit: "Platzhalter – wird durch echtes Foto ersetzt" },
-  { id: "foto-training", category: "foto", title: "Training (Platzhalter)", src: "assets/07-gallus-start.jpg", credit: "Platzhalter – wird durch echtes Foto ersetzt" },
-  { id: "foto-stadion", category: "foto", title: "Im Stadion (Platzhalter)", src: "assets/11-tunnel.jpg", credit: "Platzhalter – wird durch echtes Foto ersetzt" },
+  { id: "foto-1930-presse", category: "foto", title: "Presseartikel 1930 (Frankfurter Illustrierte)", src: "assets/presskit/presse-frankfurter-illustrierte-1930.jpg", credit: "Foto: P. E. Hahn, Das Illustrierte Blatt, Nr. 12, 27. März 1930" },
+  { id: "foto-team-sepia", category: "foto", title: "Lottes Team, Frankfurt (sepia)", src: "assets/presskit/lottes-team-frankfurt-sepia.jpg", credit: "" },
+  { id: "foto-team-sw", category: "foto", title: "Lottes Team, Frankfurt (schwarz-weiß)", src: "assets/presskit/lottes-team-frankfurt-sw.jpg", credit: "" },
 ];
