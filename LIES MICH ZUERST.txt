@@ -1,0 +1,47 @@
+LOTTE SPECHT E.V. — LOKALE VORSCHAU
+====================================
+
+Das hier ist eine Testversion der Website, die nur auf eurem eigenen
+Computer läuft (nicht im Internet). Es ist noch kein Login nötig —
+ihr seid nach dem Start direkt drin. Ein echtes Login richten wir
+ein, bevor die Seite wirklich online geht.
+
+
+SO STARTET IHR DIE VORSCHAU
+----------------------------
+
+Am Mac:
+  1. Doppelklick auf „Server starten (Mac).command“
+  2. Meldet macOS eine Sicherheitswarnung („nicht verifizierter
+     Entwickler“ o. Ä.): Rechtsklick auf die Datei → „Öffnen“
+     wählen → im Dialog noch einmal „Öffnen“ bestätigen.
+  3. Ein Fenster mit Text öffnet sich, kurz warten. Der Browser
+     startet danach automatisch mit dem Login-Bereich.
+
+Unter Windows:
+  1. Doppelklick auf „Server starten (Windows).bat“
+  2. Warnt Windows („Der Computer wurde durch SmartScreen
+     geschützt“): auf „Weitere Informationen“ und dann
+     „Trotzdem ausführen“ klicken.
+  3. Der Browser öffnet sich automatisch.
+
+Falls Python noch nicht installiert ist, bekommt ihr eine
+Nachricht mit einem Link zum Nachinstallieren — danach das
+Startskript einfach noch einmal doppelklicken.
+
+
+ZUM BEENDEN
+------------
+
+Einfach das schwarze/dunkle Server-Fenster schließen. Der Browser-
+Tab kann offen bleiben, funktioniert danach aber nicht mehr.
+
+
+WAS IHR DAMIT MACHEN KÖNNT
+----------------------------
+
+Nach dem Start seid ihr in der Übersicht („Alles an einem Ort“).
+Dort gibt es eine kurze Einführung „Neu hier? So funktioniert's.“ —
+und im Editor selbst noch einmal „Wie funktioniert der Editor?“.
+Einfach ausprobieren: Nichts geht dabei kaputt, jede Änderung lässt
+sich rückgängig machen.

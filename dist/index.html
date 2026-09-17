@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Ein scrollgesteuerter filmischer Entwurf für Lotte Specht e.V. – von 1930 bis ins Frankfurter Flutlicht."
+    />
+    <meta name="theme-color" content="#0b0b0b" />
+    <title>Vom Rand ins Spiel — Lotte Specht e.V.</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23e3062c'/%3E%3Cpath d='M18 43V20h7v17h12v6H18Zm22 0V20h7v23h-7Z' fill='white'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="styles.css?v=studio1" />
+    <script>if (!window.location.hash) document.documentElement.classList.add("presentation-ready");</script>
+    <script src="app.js?v=studio1" defer></script>
+    <script src="menu.js?v=menu7" defer></script>
+  </head>
+  <body class="home-body">
+    <div class="presentation-start" id="presentation-start" hidden>
+      <button id="presentation-start-button" type="button">Start</button>
+    </div>
+    <a class="skip-link" href="#inhalt">Zum Inhalt</a>
+
+    <header class="site-header">
+      <a class="brand brand-scroll" href="#film" aria-label="Lotte Specht e.V. – zum Scrollfilm"><span class="brand-wordmark"><img src="assets/logo.png" alt="Lotte Specht e.V." /></span></a>
+      <details class="site-menu">
+        <summary>Menü</summary>
+        <nav aria-label="Hauptnavigation">
+          <a href="lotte-specht.html">Wer Lotte Specht war</a>
+          <a href="wir.html">Wer wir sind</a>
+          <a href="was-wir-tun.html">Was wir tun</a>
+          <a href="efc.html">EFC Lotte Specht</a>
+          <a href="wo-laeuft.html">Wo läuft's?</a>
+          <a href="presse.html">Presse</a>
+          <a href="kontakt.html">Mitmachen &amp; Kontakt</a>
+          <div class="menu-internal"><a href="login.html">Login Bereich ↗</a></div>
+        </nav>
+      </details>
+      <a class="header-cta" href="#mitmachen">Mitmachen</a>
+    </header>
+
+    <main>
+      <section class="scroll-story" id="film" aria-label="Vom Rand ins Spiel – ein Scrollfilm">
+        <div class="stage">
+          <div class="stage-meta" aria-hidden="true">
+            <span id="era-label">1930 · Am Rand</span>
+            <span id="frame-label">0.0 s</span>
+          </div>
+
+          <div class="film-window" aria-hidden="true">
+            <img id="sequence-frame" src="assets/film-sequence/frame-0001.jpg" alt="" />
+            <img id="intro-frame" alt="" aria-hidden="true" hidden />
+            <div class="film-grain"></div>
+          </div>
+
+          <div class="intro-progress" id="intro-progress" role="progressbar" aria-label="Intro wird abgespielt" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden><span></span></div>
+          <button class="intro-skip" id="intro-skip" type="button" hidden>Intro überspringen</button>
+
+          <div class="sequence-loader" id="sequence-loader" role="status">
+            <span></span>
+            <p>Scrollfilm wird geladen</p>
+          </div>
+
+          <div class="story-copy copy-left" data-from="0" data-to="0.105">
+            <p>Frankfurt · 1930</p>
+            <h1>Sie schaut zu.<br />Noch.</h1>
+          </div>
+
+          <div class="story-copy copy-right" data-from="0.14" data-to="0.24">
+            <p>Der Blick</p>
+            <h2>Eine Idee<br />nimmt Form an.</h2>
+          </div>
+
+          <div class="story-copy copy-left" data-from="0.33" data-to="0.43">
+            <p>Der Übergang</p>
+            <h2>Eine Idee.<br />Ein neuer Anstoß.</h2>
+          </div>
+
+          <div class="story-copy copy-right" data-from="0.46" data-to="0.60">
+            <p>Der Anstoß</p>
+            <h2>Der Platz<br />gehört jetzt ihnen.</h2>
+          </div>
+
+          <div class="story-copy copy-left" data-from="0.65" data-to="0.82">
+            <p>Das erste Spiel</p>
+            <h2>Der Ball kommt<br />ins Rollen.</h2>
+          </div>
+
+          <div class="story-copy copy-right" data-from="0.84" data-to="0.92">
+            <p>Bis heute</p>
+            <h2>Was damals begann,<br />spielt weiter.</h2>
+          </div>
+
+          <div class="scroll-hint" aria-hidden="true">
+            <span>Scrollen</span>
+            <b>↓</b>
+          </div>
+
+          <nav class="progress-track" aria-label="Kapitel im Scrollfilm">
+            <span id="progress-fill"></span>
+            <ol class="progress-milestones">
+              <li data-progress="0" style="--milestone: 0%"><button type="button" aria-label="Zum Kapitel 1930">1930</button></li>
+              <li data-progress="0.14" style="--milestone: 14%"><button type="button" aria-label="Zum Kapitel Idee">Idee</button></li>
+              <li data-progress="0.33" style="--milestone: 33%"><button type="button" aria-label="Zum Kapitel Anstoß">Anstoß</button></li>
+              <li data-progress="0.65" style="--milestone: 65%"><button type="button" aria-label="Zum Kapitel Spiel">Spiel</button></li>
+              <li data-progress="1" style="--milestone: 100%"><button type="button" aria-label="Zum Kapitel Heute">Heute</button></li>
+            </ol>
+          </nav>
+        </div>
+      </section>
+
+      <section class="content" id="inhalt">
+        <div class="content-intro">
+          <p class="eyebrow">Lotte Specht e.V.</p>
+          <h2>Fußball gehört allen.</h2>
+          <p class="lead">
+            Wir machen Frauen im Fußball sichtbar – auf dem Platz, in der Kurve,
+            auf den Rängen und mitten in Frankfurt.
+          </p>
+        </div>
+
+        <div class="mission-grid">
+          <article>
+            <span>01</span>
+            <h3>Spielraum</h3>
+            <p>
+              Wir fördern Mädchen und Frauen, die Fußball spielen, ausprobieren
+              und für sich erobern wollen.
+            </p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Fankultur</h3>
+            <p>
+              Wir verbinden Menschen, die Fußball leidenschaftlich, offen und
+              solidarisch leben.
+            </p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Haltung</h3>
+            <p>
+              Wir stehen klar gegen Sexismus, Rassismus, Antisemitismus und
+              Homophobie.
+            </p>
+          </article>
+        </div>
+
+        <div class="join" id="mitmachen">
+          <p class="eyebrow">Mitmachen</p>
+          <h2>Mitspielen.<br />Mitfiebern.<br />Mitgestalten.</h2>
+          <div>
+            <p>
+              Ob auf dem Platz, auf den Rängen oder hinter den Kulissen:
+              Willkommen im Team.
+            </p>
+            <a href="mailto:post@lotte-specht.de">post@lotte-specht.de <span>↗</span></a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <img src="assets/logo.png" alt="Lotte Specht e.V." />
+      <p>Frankfurt am Main</p>
+      <p><a href="styleguide.html">Styleguide</a></p>
+    </footer>
+  </body>
+</html>
