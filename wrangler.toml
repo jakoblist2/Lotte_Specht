@@ -1,0 +1,12 @@
+name = "lotte-specht"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-09-17"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "lotte-specht-db"
+database_id = "73254ff6-e881-4cd8-9697-995e906ca3bd"
+
+[[r2_buckets]]
+binding = "UPLOADS"
+bucket_name = "lotte-specht-uploads"
