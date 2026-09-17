@@ -253,6 +253,7 @@
         actions.append(button('Bearbeiten',()=>editItem(item)),button('Entfernen',removeItem(item),'text-button'));card.append(actions);$('collection-list').append(card);
       });
     }
+    function dateKey(y,m,d){return y+'-'+String(m+1).padStart(2,'0')+'-'+String(d).padStart(2,'0');}
     function drawMonth() {
       const grid=$('month-grid');grid.replaceChildren();
       $('month-label').textContent=monthCursor.toLocaleDateString('de-DE',{month:'long',year:'numeric'});
@@ -262,9 +263,9 @@
       const startOffset=(new Date(monthCursor.getFullYear(),monthCursor.getMonth(),1).getDay()+6)%7;
       const daysInMonth=new Date(monthCursor.getFullYear(),monthCursor.getMonth()+1,0).getDate();
       for(let i=0;i<startOffset;i++)grid.append(el('div',undefined,'calendar-cell calendar-cell-empty'));
-      const todayKey=new Date().toISOString().slice(0,10);
+      const now=new Date();const todayKey=dateKey(now.getFullYear(),now.getMonth(),now.getDate());
       for(let day=1;day<=daysInMonth;day++){
-        const key=new Date(monthCursor.getFullYear(),monthCursor.getMonth(),day).toISOString().slice(0,10);
+        const key=dateKey(monthCursor.getFullYear(),monthCursor.getMonth(),day);
         const cell=el('div',undefined,'calendar-cell'+(key===todayKey?' calendar-cell-today':''));
         cell.append(el('span',String(day),'calendar-daynum'));
         (byDay.get(key)||[]).sort((a,b)=>a.date.localeCompare(b.date)).forEach(item=>cell.append(button(item.title,()=>editItem(item),'calendar-entry')));
