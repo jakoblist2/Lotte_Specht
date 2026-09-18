@@ -5,41 +5,48 @@
 
   function renderMatches(items) {
     const list = $('matches-list');
-    const calendarRoot = $('match-calendar');
     const dayStrip = $('match-day-strip');
     const monthLabel = $('match-month-label');
     let activeFilter = 'alle';
-    let activeView = 'list';
     let activeDay = null;
-    const now = Date.now();
-    const upcoming = items.filter(i => i.date && new Date(i.date).getTime() > now).sort((a, b) => a.date.localeCompare(b.date));
-    const startRef = upcoming.length ? new Date(upcoming[0].date) : new Date();
-    let monthCursor = new Date(startRef.getFullYear(), startRef.getMonth(), 1);
+    let monthCursor = new Date();
+    monthCursor = new Date(monthCursor.getFullYear(), monthCursor.getMonth(), 1);
 
     const dateKey = (y, m, d) => y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
     const itemDay = (item) => item.date ? item.date.slice(0, 10) : null;
-    const formatMatchDate = (date) => date.includes('T')
-      ? new Date(date).toLocaleString('de-DE', {dateStyle: 'medium', timeStyle: 'short'})
-      : new Date(date + 'T00:00').toLocaleDateString('de-DE', {dateStyle: 'medium'}) + ', Uhrzeit folgt';
+    const isEF = (name) => /eintracht frankfurt/i.test(name || '');
+    const escapeHtml = (text) => (text || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const teamHtml = (name) => isEF(name) ? '<strong class="ef-team">' + escapeHtml(name) + '</strong>' : escapeHtml(name);
+    const formatTime = (date) => (date && date.includes('T')) ? date.slice(11, 16) : '';
+    const formatDayHeading = (key) => new Date(key + 'T00:00').toLocaleDateString('de-DE', {weekday: 'long', day: '2-digit', month: 'long'});
 
-    function drawList() {
+    function drawAgenda() {
       list.replaceChildren();
+      const monthPrefix = dateKey(monthCursor.getFullYear(), monthCursor.getMonth(), 1).slice(0, 7);
       const visible = items
         .filter(item => activeFilter === 'alle' || item.gender === activeFilter)
-        .filter(item => activeView === 'calendar' || !item.date || new Date(item.date).getTime() > now - 3 * 60 * 60 * 1000)
-        .filter(item => !activeDay || itemDay(item) === activeDay)
+        .filter(item => activeDay ? itemDay(item) === activeDay : (itemDay(item) || '').slice(0, 7) === monthPrefix)
         .sort((a, b) => (a.date || '').localeCompare(b.date || ''));
-      if (!visible.length) { list.append(el('div', activeDay ? 'An diesem Tag ist kein Spiel eingetragen.' : 'Aktuell sind keine Spiele eingetragen.', 'empty-state')); return; }
+      if (!visible.length) { list.append(el('div', activeDay ? 'An diesem Tag ist kein Spiel eingetragen.' : 'In diesem Monat ist kein Spiel eingetragen.', 'empty-state')); return; }
+      let currentGroupKey;
+      let groupNode;
       visible.forEach(item => {
-        const card = el('article', undefined, 'match-card');
-        card.append(el('time', item.date ? formatMatchDate(item.date) : 'Termin folgt'));
-        const league = el('span', item.gender === 'frauen' ? 'Frauen-Bundesliga' : 'Männer-Bundesliga', 'match-league');
-        card.append(league);
-        card.append(el('h3', item.team_home + ' – ' + item.team_away));
-        const meta = [item.competition, item.broadcaster].filter(Boolean).join(' · ');
-        if (meta) card.append(el('p', meta));
-        if (item.notes) card.append(el('p', item.notes));
-        list.append(card);
+        const day = itemDay(item);
+        if (day !== currentGroupKey) {
+          currentGroupKey = day;
+          groupNode = el('div', undefined, 'match-agenda-group');
+          groupNode.append(el('p', day ? formatDayHeading(day) : 'Termin folgt', 'match-agenda-date'));
+          list.append(groupNode);
+        }
+        const highlighted = isEF(item.team_home) || isEF(item.team_away);
+        const row = el('div', undefined, 'match-row' + (highlighted ? ' is-efc' : ''));
+        row.append(el('span', formatTime(item.date) || '–', 'match-row-time'));
+        const teams = document.createElement('span');
+        teams.className = 'match-row-teams';
+        teams.innerHTML = teamHtml(item.team_home) + ' – ' + teamHtml(item.team_away);
+        row.append(teams);
+        row.append(el('span', [item.competition, item.broadcaster].filter(Boolean).join(' · '), 'match-row-meta'));
+        groupNode.append(row);
       });
     }
 
@@ -71,7 +78,7 @@
         cell.addEventListener('click', () => {
           activeDay = activeDay === key ? null : key;
           drawDayStrip();
-          drawList();
+          drawAgenda();
         });
         if (key === activeDay) activeCell = cell;
         dayStrip.append(cell);
@@ -79,29 +86,19 @@
       if (activeCell) activeCell.scrollIntoView({behavior: 'smooth', inline: 'center', block: 'nearest'});
     }
 
-    function setView(view) {
-      activeView = view;
-      document.querySelectorAll('.spielplan-view-toggle .filter-chip').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.view === view)));
-      calendarRoot.hidden = view !== 'calendar';
-      if (view !== 'calendar') activeDay = null;
-      drawDayStrip();
-      drawList();
-    }
-
     document.querySelectorAll('.spielplan-filter > .filter-chip[data-filter]').forEach(chip => {
       chip.addEventListener('click', () => {
         activeFilter = chip.dataset.filter;
         document.querySelectorAll('.spielplan-filter > .filter-chip[data-filter]').forEach(c => c.setAttribute('aria-pressed', String(c === chip)));
         drawDayStrip();
-        drawList();
+        drawAgenda();
       });
     });
-    document.querySelectorAll('.spielplan-view-toggle .filter-chip').forEach(btn => btn.addEventListener('click', () => setView(btn.dataset.view)));
-    $('match-month-prev').addEventListener('click', () => { monthCursor.setMonth(monthCursor.getMonth() - 1); drawDayStrip(); });
-    $('match-month-next').addEventListener('click', () => { monthCursor.setMonth(monthCursor.getMonth() + 1); drawDayStrip(); });
+    $('match-month-prev').addEventListener('click', () => { monthCursor.setMonth(monthCursor.getMonth() - 1); activeDay = null; drawDayStrip(); drawAgenda(); });
+    $('match-month-next').addEventListener('click', () => { monthCursor.setMonth(monthCursor.getMonth() + 1); activeDay = null; drawDayStrip(); drawAgenda(); });
 
     drawDayStrip();
-    drawList();
+    drawAgenda();
   }
 
   function renderVenueList(venues) {

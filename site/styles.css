@@ -1699,8 +1699,6 @@ html.intro-playing body,
 
 .filter-chip:hover { border-color: var(--red); }
 
-.spielplan-view-toggle { display: flex; gap: 12px; margin-left: auto; }
-
 .match-calendar { margin: 0 0 32px; }
 
 .match-calendar-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
@@ -1733,25 +1731,55 @@ html.intro-playing body,
 
 .match-day-active .match-day-dot { background: white; }
 
-.spielplan-list, .venue-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 8px; }
+.venue-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 8px; }
 
-.match-card, .venue-card { border: 1px solid #111; padding: 24px; }
+.venue-card { border: 1px solid #111; padding: 24px; }
 
-.match-card time { display: block; color: var(--red); font-weight: 800; font-size: 13px; letter-spacing: 0.04em; margin-bottom: 12px; }
+.venue-card h3 { margin: 0 0 10px; font-size: 1.35rem; letter-spacing: -0.02em; }
 
-.match-league { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #656565; margin-bottom: 10px; }
-
-.match-card h3, .venue-card h3 { margin: 0 0 10px; font-size: 1.35rem; letter-spacing: -0.02em; }
-
-.match-card p, .venue-card p { margin: 0 0 8px; font-size: 0.95rem; line-height: 1.5; }
+.venue-card p { margin: 0 0 8px; font-size: 0.95rem; line-height: 1.5; }
 
 .venue-card a { display: inline-block; margin-top: 6px; margin-right: 16px; font-weight: 750; text-underline-offset: 0.25em; }
+
+.match-agenda { margin-top: 8px; }
+
+.match-agenda-group { margin-bottom: 28px; }
+
+.match-agenda-date { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #656565; margin: 0 0 10px; }
+
+.match-row { display: flex; align-items: baseline; gap: 16px; padding: 10px 4px; border-bottom: 1px solid #e5e4df; font-size: 0.92rem; }
+
+.match-row.is-efc { background: rgba(227, 6, 44, 0.05); }
+
+.match-row-time { flex: 0 0 auto; width: 48px; color: var(--red); font-weight: 800; font-size: 0.85rem; }
+
+.match-row-teams { flex: 1 1 auto; min-width: 0; }
+
+.ef-team { color: var(--red); font-weight: 800; }
+
+.match-row-meta { flex: 0 0 auto; color: #656565; font-size: 0.8rem; text-align: right; }
 
 .venue-tag { color: var(--red); font-weight: 750; }
 
 .venue-index { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; margin-right: 6px; background: var(--red); color: white; font-size: 12px; font-weight: 800; border-radius: 50%; }
 
 .venue-map { position: relative; width: 100%; height: 60vh; min-height: 360px; margin: 32px 0; border: 1px solid #111; background: var(--paper); }
+
+.venue-map .leaflet-tile-pane { filter: grayscale(1) contrast(1.08) brightness(1.04); }
+
+.venue-map .leaflet-popup-content-wrapper { border-radius: 0; border: 1px solid #111; box-shadow: none; }
+
+.venue-map .leaflet-popup-content { margin: 12px 14px; font-size: 13px; line-height: 1.5; color: #111; }
+
+.venue-map .leaflet-popup-content strong { color: var(--red); }
+
+.venue-map .leaflet-popup-tip-container { display: none; }
+
+.venue-map .leaflet-control-zoom a { border-radius: 0; border-color: #111; color: #111; }
+
+.venue-map .leaflet-control-zoom a:hover { background: var(--red); color: white; border-color: var(--red); }
+
+.venue-map .leaflet-control-attribution { background: rgba(255, 255, 255, 0.85); font-size: 10px; }
 
 .venue-map.venue-map-offline svg { width: 100%; height: 100%; display: block; }
 
@@ -1767,6 +1795,8 @@ html.intro-playing body,
 
 @media (max-width: 720px) {
   .venue-map { height: 50vh; }
+  .match-row { flex-wrap: wrap; }
+  .match-row-meta { width: 100%; text-align: left; padding-left: 64px; }
 }
 
 /* Presse */

@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Wann laufen Frauen- und Männer-Bundesliga? Spielplan und Orte in Frankfurt zum gemeinsamen Zuschauen." />
-    <title>Wo läuft&#x27;s? — Lotte Specht e.V.</title><link rel="icon" href="assets/logo.png" /><link rel="stylesheet" href="styles.css?v=studio3" />
+    <title>Wo läuft&#x27;s? — Lotte Specht e.V.</title><link rel="icon" href="assets/logo.png" /><link rel="stylesheet" href="styles.css?v=studio5" />
     <script src="menu.js?v=menu7" defer></script>
-    <script src="wo-laeuft.js?v=3" defer></script>
+    <script src="wo-laeuft.js?v=4" defer></script>
   </head>
   <body class="page-body">
     <a class="skip-link" href="#inhalt">Zum Inhalt</a>
@@ -14,17 +14,19 @@
       <section class="page-hero"><div class="page-hero-copy"><p class="page-kicker">Sichtbar werden</p><h1>Wo läuft&#x27;s?</h1><p class="page-deck">Frauenfußball wird seltener übertragen als Männerfußball. Hier steht, wann welches Spiel läuft – und wo ihr in Frankfurt gemeinsam zuschauen könnt.</p></div><div class="page-hero-media"><img src="assets/13-stadion-start.jpg" alt="Blick ins Frankfurter Stadion kurz vor Anpfiff" /></div></section>
 
       <section class="page-section"><div class="page-section-inner">
-        <div class="section-title-row"><p class="page-kicker">Spielplan</p><h2>Kommende Spiele.</h2></div>
+        <div class="section-title-row"><p class="page-kicker">Public Viewing</p><h2>Orte in Frankfurt.</h2></div>
+        <div id="venue-map" class="venue-map" data-fallback-label="Schematische Karte von Frankfurt am Main"></div>
+        <div id="venue-list" class="venue-list"></div>
+      </div></section>
+
+      <section class="page-section"><div class="page-section-inner">
+        <div class="section-title-row"><p class="page-kicker">Spielplan</p><h2>Wann läuft was.</h2></div>
         <div class="spielplan-filter" role="group" aria-label="Nach Liga filtern">
           <button type="button" class="filter-chip" data-filter="alle" aria-pressed="true">Alle</button>
           <button type="button" class="filter-chip" data-filter="frauen" aria-pressed="false">Frauen-Bundesliga</button>
           <button type="button" class="filter-chip" data-filter="maenner" aria-pressed="false">Männer-Bundesliga</button>
-          <div class="spielplan-view-toggle" role="group" aria-label="Ansicht wählen">
-            <button type="button" class="filter-chip" data-view="list" aria-pressed="true">Liste</button>
-            <button type="button" class="filter-chip" data-view="calendar" aria-pressed="false">Kalender</button>
-          </div>
         </div>
-        <div id="match-calendar" class="match-calendar" hidden>
+        <div id="match-calendar" class="match-calendar">
           <div class="match-calendar-header">
             <button type="button" id="match-month-prev" class="calendar-nav" aria-label="Vorheriger Monat">‹</button>
             <h3 id="match-month-label"></h3>
@@ -32,13 +34,7 @@
           </div>
           <div id="match-day-strip" class="match-day-strip" role="listbox" aria-label="Tag wählen, zum Scrollen wischen"></div>
         </div>
-        <div id="matches-list" class="spielplan-list"><div class="empty-state">Spiele werden geladen …</div></div>
-      </div></section>
-
-      <section class="page-section"><div class="page-section-inner">
-        <div class="section-title-row"><p class="page-kicker">Public Viewing</p><h2>Orte in Frankfurt.</h2></div>
-        <div id="venue-map" class="venue-map" data-fallback-label="Schematische Karte von Frankfurt am Main"></div>
-        <div id="venue-list" class="venue-list"></div>
+        <div id="matches-list" class="match-agenda"><div class="empty-state">Spiele werden geladen …</div></div>
       </div></section>
     </main>
     <footer class="page-footer"><img src="assets/logo.png" alt="Lotte Specht e.V." /><p>Frankfurt am Main</p><p></p></footer>

@@ -12,7 +12,7 @@ export async function onRequestPost({ request, env }) {
   let data;
   try { data = await request.json(); } catch { return json({ error: "JSON erforderlich." }, 415); }
   const items = data.items;
-  if (!Array.isArray(items) || items.length > 500) return json({ error: "Ungültige Einträge." }, 400);
+  if (!Array.isArray(items) || items.length > 2000) return json({ error: "Ungültige Einträge." }, 400);
   const clean = [];
   for (const item of items) {
     if (item.gender !== "frauen" && item.gender !== "maenner") return json({ error: "Bitte Frauen- oder Männer-Bundesliga wählen." }, 400);

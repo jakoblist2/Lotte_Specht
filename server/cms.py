@@ -281,7 +281,7 @@ class Handler(SimpleHTTPRequestHandler):
                 put(path,clean);return self.respond({'ok':True})
             if path=='/api/matches':
                 items=data.get('items')
-                if not isinstance(items,list) or len(items)>500:raise ValueError('Ungültige Einträge.')
+                if not isinstance(items,list) or len(items)>2000:raise ValueError('Ungültige Einträge.')
                 clean=[]
                 for item in items:
                     if item.get('gender') not in ('frauen','maenner'):raise ValueError('Bitte Frauen- oder Männer-Bundesliga wählen.')
